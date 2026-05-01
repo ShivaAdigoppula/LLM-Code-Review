@@ -25,14 +25,19 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Add simple PR comment
-        uses: actions/github-script@v7
+      - name: Get PR diff
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git diff origin/${{ github.base_ref }}...HEAD > diff.txt
+
+      - name: Show diff info
+        run: |
+          echo "Diff file created"
+          wc -l diff.txt
+          head -n 20 diff.txt
+
+      - name: Upload diff artifact
+        uses: actions/upload-artifact@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "PR workflow is working successfully. Next step is diff extraction."
-            })
+          name: pr-diff
+          path: diff.txt
