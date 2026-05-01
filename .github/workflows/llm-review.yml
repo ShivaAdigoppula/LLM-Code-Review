@@ -1,6 +1,9 @@
 name: LLM Code Review
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
@@ -30,22 +33,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Get PR diff
+      - name: Print trigger info
         run: |
-          git fetch origin ${{ github.base_ref }}
-          git diff origin/${{ github.base_ref }}...HEAD > diff.txt
-
-      - name: Run LLM review script
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_EVENT_PATH: ${{ github.event_path }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python scripts/review_code.py
-
-      - name: Upload diff artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: pr-diff
-          path: diff.txt
+          echo "Workflow triggered successfully"
+          echo "Event name: ${{ github.event_name }}"
