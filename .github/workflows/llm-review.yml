@@ -36,8 +36,20 @@ jobs:
           wc -l diff.txt
           head -n 20 diff.txt
 
+      - name: Run review script
+        run: |
+          python scripts/review_code.py
+
       - name: Upload diff artifact
         uses: actions/upload-artifact@v4
         with:
           name: pr-diff
           path: diff.txt
+
+
+      - name: Upload review output
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-output
+          path: review_output.md
+
