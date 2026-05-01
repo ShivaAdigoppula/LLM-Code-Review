@@ -20,7 +20,6 @@ with open("review_output.md", "w", encoding="utf-8") as f:
     f.write(review_text)
 
 print("Improved review script finished.")
-=======
     review_text = "Basic review successful. Diff file was read."
 
 with open("review_output.md", "w", encoding="utf-8") as f:
